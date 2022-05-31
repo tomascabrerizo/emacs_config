@@ -1,32 +1,33 @@
-;; ----------------------------
-;; @Tomas: emacs configuration
-;; ----------------------------
+;; ----------------------
+;; Package configuration 
+;; ----------------------
+(add-to-list 'load-path  (concat default-directory "lib/evil"))
+(require 'evil)
+(evil-mode 1)
 
-;; symbolic link
+(load-theme 'modus-operandi nil)
+(load-theme 'spacemacs-light t)
 
+;; ----------------------------
+ ;; @Tomas: emacs configuration
+;; ----------------------------
 (setq inhibit-startup-message t)
 (setq visible-bell t)
-
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
-(hl-line-mode -1)
+
+(global-hl-line-mode 1)
+
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
 (setq-default indent-tabs-mode nil)
-
-;; maximize emacs on start up
 (add-hook 'window-setup-hook 'toggle-frame-maximized t)
-
-;; set emasc theme
-;; override modus operandi background color
-(setq modus-themes-operandi-color-overrides
-      '((bg-main . "#ffffff")))
-(setq modus-themes-operandi-color-overrides
-      '((bg-main . "#fcf1dc")))
-(load-theme 'modus-operandi t)
 
 ;; set emacs font
 (set-face-attribute 'default nil
@@ -34,17 +35,16 @@
                     :height 110
                     :weight 'normal)
 
-;; Temporal C configuration
-(setq c-basic-offset 4)
+;; -------------------------
+;; Temporal C configuration 
+;; -------------------------
 (set-default 'truncate-lines t)
+(setq c-basic-offset 4)
 (c-set-offset 'case-label '+)
-;; (add-hook 'c-mode-common-hook
-;;           (lambda ()
-;;             (c-set-offset 'case-label '+)))
 
-;; ----------------------------
+;; -----------------------------
 ;; @Tomas: Custom lisp functions
-;; ----------------------------
+;; -----------------------------
 
 (defun t-select-line ()
   (interactive)
@@ -63,9 +63,9 @@
   (t-select-line-newline)
   (kill-region (point) (mark)))
 
-;;------------------------------
+;;---------------------------------------
 ;; @Tomas: Emacs modal mode (version 0.0)
-;;------------------------------
+;;---------------------------------------
 
 ;; Normal mode key binndings
 (defvar t-normal-mode-keymap (copy-keymap global-map))
@@ -91,4 +91,4 @@
                (use-global-map t-insert-mode-keymap)))))
 
 ;; Start Emacs with tomi normal mode
-(t-normal-mode 1)
+(t-normal-mode -1)
