@@ -75,7 +75,8 @@ directory."
 	(dir nil))
     (while (and path-stack (not project-dir-path))
       (setq dir (mapconcat 'identity path-stack "/"))
-      (if (eq system-type 'gnu/linux) (concat "/" dir))
+      (if (eq system-type 'gnu/linux)
+	  (setq dir (concat "/" dir)))
       (if (file-exists-p (concat dir (concat "/" compilation-file))) 
 	  (setq project-dir-path dir))
       (setq path-stack (butlast path-stack)))
@@ -83,8 +84,11 @@ directory."
 
 (defun  compile-in-directory ()
   "Search for a compile file and run it in the file current directory"
-  (let ((default-directory (find-project-dir)))
-    (compile (format compilation-file))))
+  (let ((default-directory (find-project-dir))
+	(compilation-command compilation-file))
+    (if (eq system-type 'gnu/linux)
+	(setq compilation-command (concat "./" compilation-file))) 
+    (compile (format compilation-command))))
 
 
 ;; -------------------------------------------
