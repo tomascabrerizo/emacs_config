@@ -104,22 +104,25 @@ directory."
 ;; Create .h file with same name of current .c file
 ;; -------------------------------------------------
 
+(defun my-file-name-with-extension (filename ext)
+  (concat (file-name-sans-extension filename) (concat "." ext)))
+
 (defun swap-to-h-file()
   (let ((ext (file-name-extension buffer-file-name)))
     (if (or (string= ext "c") (string= ext "cpp"))
-	(find-file (file-name-with-extension buffer-file-name "h")))))
+	(find-file (my-file-name-with-extension buffer-file-name "h")))))
 
 (defun swap-to-c-file()
   (let ((ext (file-name-extension buffer-file-name)))
     (if (string= ext "h")
-	(find-file (file-name-with-extension buffer-file-name "c")))))
+	(find-file (my-file-name-with-extension buffer-file-name "c")))))
 
 (defun toggle-c-and-h-file ()
     (let ((ext (file-name-extension buffer-file-name)))
       (if (or (string= ext "c") (string= ext "cpp"))
-	  (find-file (file-name-with-extension buffer-file-name "h")))
+	  (find-file (my-file-name-with-extension buffer-file-name "h")))
       (if (string= ext "h")
-	  (find-file (file-name-with-extension buffer-file-name "c")))))
+	  (find-file (my-file-name-with-extension buffer-file-name "c")))))
       
 
 ;; -------------------
