@@ -5,19 +5,27 @@
 (setq visible-bell t)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(menu-bar-mode 1)
+(menu-bar-mode -1)
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
-; Smooth scroll
 (setq scroll-step 1)
+(set-default 'truncate-lines t)
 
 ;; -----------------------
 ;; ORG mode configuration
 ;; -----------------------
 
-(setq org-agenda-files '("D:/uni/school.org"))
+;; Enable org-indent mode by default
+(org-indent mode 1)
+
+(setq uni-directory "D:/Uni/")
+
+(setq org-agenda-files (list (concat uni-directory "school.org")
+			     (concat uni-directory "buffer.org")))
+(setq org-agenda-span 30)
+(setq org-deadline-warning-days 30)
 
 ;; -----------------
 ;; Bright-red TODOs
@@ -113,11 +121,12 @@ directory."
 
 ;; bind swap to h file to f1
 (global-set-key [f1] (lambda () (interactive) (toggle-c-and-h-file)))
-;; vim like autocomplete key binding
-(global-set-key (kbd "C-n") 'dabbrev-expand)
 ;; bind compiling to f5
 (global-set-key [f5] (lambda () (interactive) (compile-in-directory)))
 
+(global-set-key (kbd "C-n") 'dabbrev-expand)
+(global-set-key (kbd "M-n") 'next-error)
+(global-set-key (kbd "M-p") 'previous-error)
 
 ;; ------------------
 ;; Emacs color theme
@@ -125,33 +134,31 @@ directory."
 
 ;; (custom-set-faces
 ;;  '(default ((t (:family "Liberation Mono" :foundry "outline" :slant normal :weight normal :height 105 :width normal)))))
-;; (load-theme 'leuven t)
+;;(load-theme 'leuven t)
 
 (add-to-list 'default-frame-alist '(font . "Liberation Mono-11.5"))
 (set-face-attribute 'default t :font "Liberation Mono-11.5")
 (set-face-attribute 'font-lock-builtin-face nil :foreground "#ccfccb")
 (set-face-attribute 'font-lock-comment-face nil :foreground "#888888")
 (set-face-attribute 'font-lock-constant-face nil :foreground "#00ff00")
-(set-face-attribute 'font-lock-doc-face nil :foreground "gray50")
+(set-face-attribute 'font-lock-doc-face nil :foreground "#888888")
 
 (set-face-attribute 'font-lock-function-name-face nil :foreground "#ccfccb")
 (set-face-attribute 'font-lock-variable-name-face nil :foreground "#ccfccb")
-
 (set-face-attribute 'font-lock-keyword-face nil :foreground "#f2a359")
-(set-face-attribute 'font-lock-string-face nil :foreground "#00ff00")
 (set-face-attribute 'font-lock-type-face nil :foreground "#f2a359")
+(set-face-attribute 'font-lock-string-face nil :foreground "#00ff00")
 
 (set-foreground-color "#ccfccb")
-(set-background-color "#161616")
+(set-background-color "#1c1d21")
 (set-cursor-color "#00ff00")
+
 
 ;; ---------------------
 ;; C mode hook function
 ;; ---------------------
 
 (defun big-fun-c-hook ()
-
-  (set-default 'truncate-lines t)
   (setq c-basic-offset 2)
   ;;(c-set-offset 'case-label '+)
 
@@ -201,3 +208,8 @@ directory."
         ((string-match "[.]cpp" buffer-file-name) (c-source-format))))
 
 (add-hook 'c-mode-common-hook 'big-fun-c-hook)
+
+
+(custom-set-faces
+ '(org-level-1 ((t (:weight bold :height 1.5))))
+ '(org-level-2 ((t (:inherit outline-2 :extend nil :height 1.2)))))
