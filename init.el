@@ -18,9 +18,9 @@
 ;; -----------------------
 
 ;; Enable org-indent mode by default
-(org-indent mode 1)
-
-(setq uni-directory "D:/Uni/")
+(if (eq system-type 'gnu/linux)
+    (setq uni-directory "~/Uni/")
+  (setq uni-directory "D:/Uni/"))
 
 (setq org-agenda-files (list (concat uni-directory "school.org")
 			     (concat uni-directory "buffer.org")))
@@ -64,8 +64,10 @@ directory."
 ;; Search for compile.bat or compile.sh file and run it
 ;; -----------------------------------------------------
 
-(setq compilation-file "compile.bat")
-  
+(if (eq system-type 'gnu/linux)
+    (setq compilation-file "compile.sh")
+  (setq compilation-file "compile.bat"))
+
 (defun find-project-dir ()
   "Search for the project root directory (where the build file is save)"
   (let ((path-stack (delete "" (split-string default-directory "/")))
@@ -73,6 +75,7 @@ directory."
 	(dir nil))
     (while (and path-stack (not project-dir-path))
       (setq dir (mapconcat 'identity path-stack "/"))
+      (if (eq system-type 'gnu/linux) (concat "/" dir))
       (if (file-exists-p (concat dir (concat "/" compilation-file))) 
 	  (setq project-dir-path dir))
       (setq path-stack (butlast path-stack)))
@@ -132,12 +135,14 @@ directory."
 ;; Emacs color theme
 ;; ------------------
 
-;; (custom-set-faces
-;;  '(default ((t (:family "Liberation Mono" :foundry "outline" :slant normal :weight normal :height 105 :width normal)))))
 ;;(load-theme 'leuven t)
 
-(add-to-list 'default-frame-alist '(font . "Liberation Mono-11.5"))
-(set-face-attribute 'default t :font "Liberation Mono-11.5")
+(if (eq system-type 'gnu/linux)
+    (custom-set-faces
+     '(default ((t (:family " Ubuntu Mono" :foundry "outline" :slant normal :weight normal :height 150 :width normal)))))
+  (add-to-list 'default-frame-alist '(font . "Liberation Mono-11.5"))
+  (set-face-attribute 'default t :font "Liberation Mono-11.5"))
+
 (set-face-attribute 'font-lock-builtin-face nil :foreground "#ccfccb")
 (set-face-attribute 'font-lock-comment-face nil :foreground "#888888")
 (set-face-attribute 'font-lock-constant-face nil :foreground "#00ff00")
